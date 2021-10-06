@@ -1,0 +1,11 @@
+ul - unordered (bulleted) list
+li - list item tool
+div -
+small -
+
+div.container = <div class="container"></div>
+
+div.container*2 = <div class="container"></div>
+                  <div class="container"></div>
+
+span#count = <span id="count"></span>
