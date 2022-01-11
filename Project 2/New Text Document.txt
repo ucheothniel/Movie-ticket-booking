@@ -1,0 +1,126 @@
+ul - unordered (bulleted) list
+li - list item tool
+div -
+small -
+
+IT IS A GOOD PRACTICE TO CREATE THE FUNCTIONS ABOVE EVENT LISTENERS
+
+div.container = <div class="container"></div>
+
+div.container*2 = <div class="container"></div>
+                  <div class="container"></div>
+
+span#count = <span id="count"></span>
+
+Javascript
+- We want to create a constant container from the DOM (Document Object Module)
+https://www.w3schools.com/js/js_htmldom.asp
+
+Query selector used to select one element with the specified class
+Query selector all used to capture all the elements with the class stated, as if they 
+Are in an array
+
+
+Arroww function '=>'
+ 
+ We can use classList.add, classList.Toggle and classList.remove
+
+ In this project we make use if the toggle syntax in order to display and undisplay the characteristics 
+ of the particular selection, as opposed to permanently adding or removing. Example, when we you hover 
+ your mouse over a set that is not occupied, you want an information to be displayed but inky when you 
+ hover your mouse, you can use the toggle syntax
+
+ Next we are defining a fucntion to update the count of the selcted seats
+
+ ERROR notice
+ Line 11 - document.querySelectorAll('.row .seat.selected'); - Take note of the space between .row and .seat..> this
+ caused an error where the count of selected seats was not being calulated and displaying an empty
+ nodelist in the console. Same space can be found in Line 2
+
+Uncaught TypeError: Assignment to constant variable.
+    at HTMLSelectElement.<anonymous> (script.js:29)
+(anonymous) @ script.js:29 - This error was displayed on the log when we added the movie selection
+event listener to change movie and get different prices per amount of seats selected. This is because we defined
+ticketPrice as a 'constant' which made it impossible to be changed. Solution is to define the ticketPrice with
+'Let' to allow variation throughout the code
+
+In order to save the seats selected information, we wna to do 3 things:
+- Copy the selected seats into an array
+- Map throuhg the array
+- Return a new array of indexes
+
+We will be making use of a spread operator (Spread syntax) to do this 
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
+
+const seatsIndex = [...selectedSeats].Map
+
+Map - this is similar to For Each, but returns an array
+
+const seatsIndex = [...selectedSeats].map(function(seat) {
+        return [...seats].indexOf(seat); -- This line of code was used to map each seat to an index, and
+        combine each selected seat into an array of index numbers (This code will be shortened in the main 
+        file)
+
+Using arrow function method:
+const seatsIndex = [...selectedSeats].map((seat) => 
+         [...seats].indexOf(seat)
+          https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+
+local storage function will be used to save the selected seats entries. Local storage uses key value pair 
+in its arguments. https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage
+
+We stringified the storage output using JSON.stringify (This ensures that we wrap the array seatsIndex)
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
+
+localStorage.setItem('selectedSeats', JSON.stringify(seatsIndex));
+
+The next step is to create a function to display the selected seats even after refrreshing the page
+from the local storage. This is why session storage is not used in this case because session storage
+is cleared once the page is refreshed. To access local storage without displaying info stored, 
+-- click on the >> in the developer mode on the same menu line as console, then enter 'Applications'
+
+We also need to create a storage for the movie selected as well as the price.
+- First we console log the movie selection index and value which is the price, to ensure the information
+is being retrieved by the script correctly in the movie selection event listener. 
+- Next we create the actual function to save this data
+
+JSON.parse - This is used as an exapt opposite of JSON.Stringify. It converts the string array back to 
+the original form they were inputed 
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse
+
+While working on the function to display selected seats in the UI, we run w for loop 
+through the array information in the local storage for selected seats to check that the seats are not null
+and the array lenght is greater than zero, meaning there is at least 1 selection
+
+- if(selectedSeats !== null && selectedSeats.lenght >0) {
+
+
+
+function populateUI() {
+    const selectedSeats = JSON.parse(localStorage.getItem('selectedSeats')
+    );
+
+    //here we create a for loop to loop through the seats selected and check that it is not an empty array
+    //and to check if the lenght of the array is greater than zero
+
+    if(selectedSeats !== null && selectedSeats.lenght > 0) {
+       seats.forEach((seat, index) => {
+           if(selectedSeats.indexOf(index) > -1) {
+               seat.classList.add('selected');
+           }
+       });
+    }
+
+    const selectedMovieIndex = localStorage.getItem('selectedMovieIndex');
+
+    if (selectedMovieIndex !== null) {
+        movieSelect.selectedIndex = selectedMovieIndex;
+    }
+
+
+}
+
+
+setMovieData(e.target.selectedIndex, e.target.value); - this line of code we are getting the selected movie index
+
+movieSelect.selectedIndex = selectedMovieIndex; - here we are setting the selected movie  in the ui to show
